@@ -1,0 +1,28 @@
+# Test profile: in-memory H2 in PostgreSQL compatibility mode with a
+# Hibernate-generated schema. Flyway migrations target real PostgreSQL and are
+# validated separately against a local PostgreSQL instance.
+spring:
+  datasource:
+    url: jdbc:h2:mem:autocare;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+
+autocare:
+  jwt:
+    secret: test-only-secret-0123456789abcdef0123456789abcdef
+    access-token-ttl: 15m
+    refresh-token-ttl: 14d
+  cookie:
+    secure: false
+  cors:
+    allowed-origins: http://localhost:5173
+  analytics:
+    base-url: http://127.0.0.1:59999
+    internal-token: test-internal-token
+    timeout: 2s

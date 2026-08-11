@@ -1,0 +1,44 @@
+# === Java / Maven ===
+backend/target/
+*.class
+hs_err_pid*
+replay_pid*
+
+# === Node ===
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+npm-debug.log*
+yarn-error.log*
+
+# === Python ===
+analytics/.venv/
+analytics/venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+analytics/uv.lock
+
+# === Environment ===
+.env
+.env.local
+.env.*.local
+
+# === IDE ===
+.idea/
+*.iml
+.vscode/
+*.swp
+.serena/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Logs / artifacts ===
+*.log
+logs/
+postgres-data/

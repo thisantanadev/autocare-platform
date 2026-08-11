@@ -1,0 +1,13 @@
+# Local development profile. Values here are intentionally NOT production-safe
+# and are only applied when the "dev" profile is explicitly activated.
+autocare:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-jwt-secret-change-me-0123456789abcdef}
+  cookie:
+    secure: false
+  analytics:
+    internal-token: ${ANALYTICS_INTERNAL_TOKEN:dev-only-internal-token}
+
+logging:
+  level:
+    com.autocare.backend: DEBUG
