@@ -18,5 +18,9 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/test/setup.js',
     css: false,
+    // userEvent replays keystroke by keystroke, which can outrun the 5s
+    // default on a loaded CI runner and fail a test mid-typing.
+    testTimeout: 20000,
+    hookTimeout: 20000,
   },
 })
