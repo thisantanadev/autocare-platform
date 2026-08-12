@@ -11,6 +11,23 @@ are in English.
 
 [![CI](https://github.com/thisantanadev/autocare-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/thisantanadev/autocare-platform/actions/workflows/ci.yml)
 
+## Screens
+
+Every figure below shows the fictional demo dataset seeded by the `demo`
+profile — no real vehicle, person or plate.
+
+![AutoCare landing page with the product pitch and three CSS gauges](docs/images/landing.jpg)
+
+*Landing page. The instrument gauges are pure CSS — the project ships no images.*
+
+![Dashboard showing spend totals, a monthly expense chart and upcoming reminders](docs/images/dashboard.jpg)
+
+*Dashboard. Spend totals, monthly expenses split between maintenance and fuel, and reminders flagged the moment they fall overdue.*
+
+![Vehicle overview with operating cost, fuel consumption and trend cards](docs/images/vehicle-detail.jpg)
+
+*Vehicle overview. Cost per kilometre and real fuel consumption, computed by the Python analytics service from full-tank refuelings.*
+
 ## Why three services
 
 The split is deliberate rather than decorative:
@@ -56,7 +73,12 @@ docker compose up --build
 ```
 
 Open <http://localhost:8081>. The stack starts with the `demo` Spring profile
-active, which seeds a fictional account on first boot:
+active, which seeds one fictional account on first boot:
+
+> **Sample data, not a real account.** These credentials belong to a throwaway
+> account created locally by `DemoDataSeeder`, alongside an invented vehicle,
+> service history and refuelings. They grant access to nothing beyond your own
+> machine, and the seeder never runs outside the `demo` profile.
 
 - **E-mail:** `demo@autocare.dev`
 - **Password:** the `DEMO_USER_PASSWORD` from your `.env` (default `DemoAutoCare123`)
