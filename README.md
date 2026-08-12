@@ -124,6 +124,23 @@ Flyway migrations are verified separately against a real PostgreSQL 18 server in
 CI, where a successful boot with `ddl-auto=validate` proves the migrations and
 the JPA mappings agree.
 
+### End-to-end validation
+
+With the stack running (see [Running natively](#running-natively) or Docker),
+`scripts/e2e-validation.sh` exercises the live API against real PostgreSQL and
+prints every step with its actual HTTP status:
+
+```bash
+bash scripts/e2e-validation.sh                                   # native stack
+API_BASE=http://localhost:8081/api/v1 bash scripts/e2e-validation.sh   # Docker stack
+```
+
+43 checks covering the full journey (register, login, vehicle, maintenance,
+fuel, reminders, dashboard, analytics), the validation and business rules,
+refresh-token rotation with reuse detection, and cross-user data isolation. It
+exits non-zero if any check fails, and registers timestamped accounts so it is
+safe to re-run against the same database. Requires `curl` and `node`.
+
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — service boundaries, data model, request flow
