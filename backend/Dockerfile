@@ -26,9 +26,13 @@ COPY --from=build /build/target/app.jar app.jar
 RUN chown -R autocare:autocare /app
 USER autocare
 
+# application.yml reads the port from SERVER_PORT; declaring it here keeps the
+# health check below in sync when the platform overrides it.
+ENV SERVER_PORT=8080
+
 EXPOSE 8080
 
 HEALTHCHECK --interval=15s --timeout=5s --start-period=45s --retries=5 \
-    CMD curl -fsS http://localhost:8080/actuator/health/readiness || exit 1
+    CMD curl -fsS "http://localhost:${SERVER_PORT}/actuator/health/readiness" || exit 1
 
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "app.jar"]

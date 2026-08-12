@@ -131,7 +131,7 @@ npm run dev
 
 Vite proxies `/api` to `localhost:8080`, so the refresh cookie stays
 first-party. In production nginx does the same thing — see
-[`frontend/nginx.conf`](frontend/nginx.conf).
+[`frontend/nginx.conf.template`](frontend/nginx.conf.template).
 
 ## Tests
 

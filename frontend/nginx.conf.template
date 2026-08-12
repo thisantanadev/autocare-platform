@@ -1,8 +1,24 @@
+# Rendered to /etc/nginx/conf.d/default.conf at container start by the official
+# nginx entrypoint, which runs envsubst over /etc/nginx/templates/*.template.
+#
+# Only PORT and BACKEND_URL are substituted (NGINX_ENVSUBST_FILTER in the
+# Dockerfile restricts it), so nginx's own $uri, $host and $scheme survive.
+# Both have defaults matching docker-compose.yml, so the local stack is
+# unaffected; on Railway they carry the assigned port and the backend's
+# private address.
 server {
-    listen 80;
+    listen ${PORT};
     server_name _;
     root /usr/share/nginx/html;
     index index.html;
+
+    # Platform health probe. Answered by nginx itself so it stays up even when
+    # the backend is still starting.
+    location = /health {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 "ok\n";
+    }
 
     # Hashed asset filenames are immutable, so they can be cached hard.
     location /assets/ {
@@ -15,7 +31,7 @@ server {
     # HttpOnly refresh cookie first-party, exactly like the Vite dev proxy,
     # so no cross-site cookie handling is needed in production either.
     location /api/ {
-        proxy_pass http://backend:8080;
+        proxy_pass ${BACKEND_URL};
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
