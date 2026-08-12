@@ -35,6 +35,20 @@ export const TREND_LABELS = {
   STABLE: 'Estável',
 }
 
+// The analytics service explains missing metrics in English; these are the
+// pt-BR equivalents keyed by the stable warning code it returns.
+export const ANALYTICS_WARNING_MESSAGES = {
+  NO_DATA: 'Nenhuma manutenção ou abastecimento registrado até agora.',
+  INSUFFICIENT_FUEL_DATA:
+    'O consumo médio precisa de pelo menos 3 abastecimentos com tanque cheio.',
+  INSUFFICIENT_DISTANCE_DATA:
+    'O custo por quilômetro precisa de leituras de odômetro cobrindo uma distância maior.',
+}
+
+export function analyticsWarningMessage(warning) {
+  return ANALYTICS_WARNING_MESSAGES[warning.code] ?? warning.message
+}
+
 export function fuelTypeLabel(value) {
   return FUEL_TYPE_LABELS[value] ?? value
 }

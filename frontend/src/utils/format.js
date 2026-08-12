@@ -30,6 +30,13 @@ export function formatLiters(value) {
     : `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 3 }).format(number)} L`
 }
 
+export function formatConsumption(value) {
+  const number = toNumber(value)
+  return number === null
+    ? '—'
+    : `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(number)} km/L`
+}
+
 /**
  * Formats ISO dates in pt-BR. Date-only strings ("2026-08-11") are parsed
  * as local dates on purpose: parsing them with `new Date` would interpret
