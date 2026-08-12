@@ -1,16 +1,54 @@
-# React + Vite
+# AutoCare Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React 19 SPA built with Vite. Consumes the Spring Boot API under `/api/v1` and
+renders the vehicle history, dashboard and per-vehicle analytics. The interface
+is in Brazilian Portuguese.
 
-Currently, two official plugins are available:
+See the repository root `README.md` and `docs/ARCHITECTURE.md` for the full
+picture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Commands
 
-## React Compiler
+```bash
+npm install       # install dependencies
+npm run dev       # dev server on :5173, proxying /api to localhost:8080
+npm test          # vitest run
+npm run test:watch
+npm run lint      # eslint
+npm run build     # production bundle into dist/
+npm run preview   # serve the built bundle
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The backend must be running on `localhost:8080` for `npm run dev` to be useful.
+The Vite proxy (see `vite.config.js`) keeps everything on one origin so the
+HttpOnly refresh cookie stays first-party — nginx does the same in production.
 
-## Expanding the Oxlint configuration
+## Layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+src/
+├── api/          One module per resource; all share the axios client
+├── auth/         AuthContext: user, login, register, logout
+├── components/   Presentational components + Recharts wrappers
+├── hooks/        useAsyncData — load, error and reload for a page
+├── pages/        One component per route (see App.jsx)
+├── utils/        pt-BR formatters, client-side validation mirrors
+└── styles/       global.css — the whole design system
+```
+
+## Conventions
+
+- **No state-management library.** Server data is loaded per page through
+  `useAsyncData`; the authenticated user is the only shared client state.
+- **The access token never touches storage.** It lives in a module variable in
+  `api/client.js`; sessions survive reloads through the refresh cookie instead.
+  A single shared refresh promise prevents a stampede when several requests hit
+  `401` at once.
+- **Validation in `utils/validation.js` mirrors the backend but is never
+  authoritative.** It exists for instant feedback; the server re-checks
+  everything.
+- **Styling is one global stylesheet** driven by CSS custom properties. Prefer an
+  existing class over a new one; the design system already covers cards, tables,
+  forms, badges, tabs, dialogs and the app shell.
+- **Labels and units come from `utils/labels.js` and `utils/format.js`,** so enum
+  values and currency/units are never formatted ad hoc in a page.
